@@ -10,16 +10,16 @@ namespace WakaTime {
 
     private bool _needToReload;
 
-    const string DASHBOARD_URL = "https://wakatime.com/dashboard/";
+    const string DASHBOARD_URL = "https://hackatime.hackclub.com/";
 
-    [MenuItem("Window/WakaTime")]
+    [MenuItem("Window/HackaTime")]
     static void Init() {
-      Window window = (Window) GetWindow(typeof(Window), false, "WakaTime");
+      Window window = (Window) GetWindow(typeof(Window), false, "HackaTime");
       window.Show();
     }
 
     void OnGUI() {
-      _enabled = EditorGUILayout.Toggle("Enable WakaTime", _enabled);
+      _enabled = EditorGUILayout.Toggle("Enable HackaTime", _enabled);
       _apiKey = EditorGUILayout.TextField("API key", _apiKey);
       EditorGUILayout.LabelField("Project name", _projectName);
 
