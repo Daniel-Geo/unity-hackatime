@@ -1,9 +1,9 @@
 {
-  "name": "com.vladfaust.unitywakatime",
-  "displayName": "Unity WakaTime",
-  "version": "2.4.0",
+  "name": "com.daniel-geo.unityhackatime",
+  "displayName": "Unity HackaTime",
+  "version": "1.0",
   "unity": "2020.1",
-  "description": "WakaTime plugin for Unity",
+  "description": "HackaTime plugin for Unity",
   "keywords": [
     "unity",
     "wakatime",
