@@ -1,7 +1,7 @@
 {
   "name": "com.daniel-geo.unityhackatime",
   "displayName": "Unity HackaTime",
-  "version": "2.4.0",
+  "version": "1.0.0",
   "unity": "2020.1",
   "description": "HackaTime plugin for Unity",
   "keywords": [
