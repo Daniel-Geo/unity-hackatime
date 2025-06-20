@@ -2,11 +2,12 @@
 
 A [Hackatime](https://hackatime.hackclub.com/) plugin for [Unity](https://unity.com).
 
-![Screenshot](https://github.com/user-attachments/assets/421a59c9-8375-4ffa-96ef-270ef149b4ae)
+![image](https://github.com/user-attachments/assets/80f56962-f006-4f65-a48f-bfafec4f4d13)
+
 
 ## About
 
-Existing solutions didn't work for me (https://github.com/vladfaust/unity-wakatime, and other solutions lack an option for sending heartbeats to different URLs, such as to Hackatime), so I decided to fork vladfaust's solution to support Hackatime, Wakatime and others using the API URL.
+Existing solutions didn't work for me (https://github.com/vladfaust/unity-wakatime, and other solutions lack an option for sending heartbeats to different API URLs, such as to Hackatime), so I decided to fork vladfaust's solution to support Hackatime, Wakatime and others using the API URL.
 
 ## Installation using the Unity Package Manager (Unity 2018.1+)
 
