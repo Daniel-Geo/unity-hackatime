@@ -4,6 +4,7 @@ using UnityEditor;
 namespace WakaTime {
   public class Window : EditorWindow {
     private string _apiKey = "";
+    private string _apiUrl = "https://hackatime.hackclub.com/api/hackatime/v1/";
     private string _projectName = "";
     private bool _enabled = true;
     private bool _debug = true;
@@ -21,6 +22,7 @@ namespace WakaTime {
     void OnGUI() {
       _enabled = EditorGUILayout.Toggle("Enable HackaTime", _enabled);
       _apiKey = EditorGUILayout.TextField("API key", _apiKey);
+      _apiUrl = EditorGUILayout.TextField("API URL", _apiUrl);
       EditorGUILayout.LabelField("Project name", _projectName);
 
       if (GUILayout.Button("Change project name")) {
@@ -34,6 +36,7 @@ namespace WakaTime {
 
       if (GUILayout.Button("Save Preferences")) {
         EditorPrefs.SetString(Plugin.API_KEY_PREF, _apiKey);
+        EditorPrefs.SetString(Plugin.API_URL_PREF, _apiUrl);
         EditorPrefs.SetBool(Plugin.ENABLED_PREF, _enabled);
         EditorPrefs.SetBool(Plugin.DEBUG_PREF, _debug);
         Plugin.Initialize();
@@ -53,6 +56,8 @@ namespace WakaTime {
 
       if (EditorPrefs.HasKey(Plugin.API_KEY_PREF))
         _apiKey = EditorPrefs.GetString(Plugin.API_KEY_PREF);
+      if (EditorPrefs.HasKey(Plugin.API_URL_PREF))
+        _apiUrl = EditorPrefs.GetString(Plugin.API_URL_PREF);
       if (EditorPrefs.HasKey(Plugin.ENABLED_PREF))
         _enabled = EditorPrefs.GetBool(Plugin.ENABLED_PREF);
       if (EditorPrefs.HasKey(Plugin.DEBUG_PREF))

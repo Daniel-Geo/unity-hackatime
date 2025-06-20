@@ -15,6 +15,7 @@ namespace WakaTime {
   [InitializeOnLoad]
   public class Plugin {
     public const string API_KEY_PREF = "WakaTime/APIKey";
+    public const string API_URL_PREF = "WakaTime/APIUrl";
     public const string ENABLED_PREF = "WakaTime/Enabled";
     public const string DEBUG_PREF = "WakaTime/Debug";
     public const string WAKATIME_PROJECT_FILE = ".wakatime-project";
@@ -22,6 +23,7 @@ namespace WakaTime {
     public static string ProjectName { get; private set; }
 
     private static string _apiKey = "";
+    private static string _apiUrl = "https://hackatime.hackclub.com/api/hackatime/v1/";
     private static bool _enabled = true;
     private static bool _debug = true;
 
@@ -42,7 +44,7 @@ namespace WakaTime {
         _debug = EditorPrefs.GetBool(DEBUG_PREF);
 
       if (!_enabled) {
-        if (_debug) Debug.Log("<WakaTime> Explicitly disabled, skipping initialization...");
+        if (_debug) Debug.Log("<HackaTime> Explicitly disabled, skipping initialization...");
         return;
       }
 
@@ -50,14 +52,23 @@ namespace WakaTime {
         _apiKey = EditorPrefs.GetString(API_KEY_PREF);
       }
 
+      if (EditorPrefs.HasKey(API_URL_PREF)) {
+        _apiUrl = EditorPrefs.GetString(API_URL_PREF);
+      }
+
       if (_apiKey == string.Empty) {
-        Debug.LogWarning("<WakaTime> API key is not set, skipping initialization...");
+        Debug.LogWarning("<HackaTime> API key is not set, skipping initialization...");
+        return;
+      }
+
+      if (_apiUrl == string.Empty) {
+        Debug.LogWarning("<HackaTime> API URL is not set, skipping initialization...");
         return;
       }
 
       ProjectName = GetProjectName();
 
-      if (_debug) Debug.Log("<WakaTime> Initializing...");
+      if (_debug) Debug.Log("<HackaTime> Initializing...");
 
       SendHeartbeat();
       LinkCallbacks();
@@ -116,8 +127,8 @@ namespace WakaTime {
         type = "file";
         time = (float) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         project = ProjectName;
-        plugin = "unity-wakatime";
-        branch = "master";
+        plugin = "unity-hackatime";
+        branch = "main";
         language = "unity";
         is_write = save;
         is_debugging = _debug;
@@ -125,7 +136,7 @@ namespace WakaTime {
     }
 
     static void SendHeartbeat(bool fromSave = false) {
-      if (_debug) Debug.Log("<WakaTime> Sending heartbeat...");
+      if (_debug) Debug.Log("<HackaTime> Sending heartbeat...");
 
       var currentScene = EditorSceneManager.GetActiveScene().path;
       var file = currentScene != string.Empty
@@ -135,13 +146,13 @@ namespace WakaTime {
       var heartbeat = new Heartbeat(file, fromSave);
       if ((heartbeat.time - _lastHeartbeat.time < HEARTBEAT_COOLDOWN) && !fromSave &&
         (heartbeat.entity == _lastHeartbeat.entity)) {
-        if (_debug) Debug.Log("<WakaTime> Skip this heartbeat");
+        if (_debug) Debug.Log("<HackaTime> Skip this heartbeat");
         return;
       }
 
       var heartbeatJSON = JsonUtility.ToJson(heartbeat);
 
-      var request = UnityWebRequest.Post(URL_PREFIX + "users/current/heartbeats?api_key=" + _apiKey, string.Empty);
+      var request = UnityWebRequest.Post(_apiUrl + "users/current/heartbeats?api_key=" + _apiKey, string.Empty);
       request.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(heartbeatJSON));
       request.SetRequestHeader("Content-Type", "application/json");
 
@@ -149,28 +160,28 @@ namespace WakaTime {
         operation => {
           if (request.downloadHandler.text == string.Empty) {
             Debug.LogWarning(
-              "<WakaTime> Network is unreachable. Consider disabling completely if you're working offline");
+              "<HackaTime> Network is unreachable. Consider disabling completely if you're working offline");
             return;
           }
 
           if (_debug)
-            Debug.Log("<WakaTime> Got response\n" + request.downloadHandler.text);
+            Debug.Log("<HackaTime> Got response\n" + request.downloadHandler.text);
           var response =
             JsonUtility.FromJson<Response<HeartbeatResponse>>(
               request.downloadHandler.text);
 
           if (response.error != null) {
             if (response.error == "Duplicate") {
-              if (_debug) Debug.LogWarning("<WakaTime> Duplicate heartbeat");
+              if (_debug) Debug.LogWarning("<HackaTime> Duplicate heartbeat");
             }
             else {
               Debug.LogError(
-                "<WakaTime> Failed to send heartbeat to WakaTime!\n" +
+                "<HackaTime> Failed to send heartbeat to HackaTime!\n" +
                 response.error);
             }
           }
           else {
-            if (_debug) Debug.Log("<WakaTime> Sent heartbeat!");
+            if (_debug) Debug.Log("<HackaTime> Sent heartbeat!");
             _lastHeartbeat = response.data;
           }
         };
