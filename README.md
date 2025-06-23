@@ -9,7 +9,7 @@ A [Hackatime](https://hackatime.hackclub.com/) plugin for [Unity](https://unity.
 
 Existing solutions didn't work for me (https://github.com/vladfaust/unity-wakatime, and other solutions lack an option for sending heartbeats to different API URLs, such as to Hackatime), so I decided to fork vladfaust's solution to support Hackatime, Wakatime and others using the API URL.
 
-## Installation using the Unity Package Manager (Unity 2018.1+)
+## Installation using the Unity Package Manager (Unity 2019.1+)
 
 The [Unity Package Manager](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@1.8/manual/index.html) (UPM) keeps package contents separate from your main project files.
 
